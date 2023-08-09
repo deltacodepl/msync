@@ -12,7 +12,7 @@ services:
       # POSTGRES_HOST_AUTH_METHOD: "trust"
     volumes:
       - db-data-msync:/var/lib/postgresql/data
-      - ./docker/db.sql:/docker-entrypoint-initdb.d/db.sql
+      # - ./docker/db.sql:/docker-entrypoint-initdb.d/db.sql
 
   pgadmin:
     image: dpage/pgadmin4
@@ -29,7 +29,7 @@ services:
       context: .
       dockerfile: ./backend/Dockerfile
       args:
-        REQUIREMENTS_FILE: ./requirements.txt
+        REQUIREMENTS_FILE: ./requirements/base.txt
     restart: always
     ports:
       - "8000:8000"
@@ -44,4 +44,4 @@ services:
       - db
 
 volumes:
-  db-data:
+  db-data-msync:

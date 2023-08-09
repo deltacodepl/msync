@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "msync"
+version = "0.1.0"
+description = ""
+authors = ["Krzysztof Olszewski <hello@retryjoin.pl>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^4.2.4"
+django-cors-headers = "^4.2.0"
+drf-yasg = "^1.21.7"
+iniconfig = "^2.0.0"
+jsonschema = "^4.19.0"
+mypy-extensions = "^1.0.0"
+packaging = "^23.1"
+pillow = "^10.0.0"
+psycopg2-binary = "^2.9.7"
+pyjwt = "^2.8.0"
+tzdata = "^2023.3"
+urllib3 = "^2.0.4"
+werkzeug = "^2.3.6"
+whitenoise = "^6.5.0"
+charset-normalizer = "^3.2.0"
+attrs = "^23.1.0"
+black = "^23.7.0"
+asgiref = "^3.7.2"
+pytz = "^2023.3"
+pyyaml = "^6.0.1"
+ruamel-yaml = "^0.17.32"
+pyrsistent = "^0.19.3"
+platformdirs = "^3.10.0"
+pathspec = "^0.11.2"
+pluggy = "^1.2.0"
+click = "^8.1.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

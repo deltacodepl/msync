@@ -7,7 +7,7 @@ from django.utils.translation import gettext as _
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 
-def image_name_and_path(instance, image_name):
+def image_name_and_path(image_name):
     """Replace the image name with random string and return the path and name"""
     ext = image_name.split(".")[-1]  # Get the extension of the image
     random_string = "".join(
