@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:14.2
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME:-database}
+      POSTGRES_USER: ${DATABASE_USER:-user}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-password}
+      # POSTGRES_HOST_AUTH_METHOD: "trust"
+    volumes:
+      - db-data-msync:/var/lib/postgresql/data
+      - ./docker/db.sql:/docker-entrypoint-initdb.d/db.sql
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@example.com"
+      PGADMIN_DEFAULT_PASSWORD: "password"
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+
+  api:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+      args:
+        REQUIREMENTS_FILE: ./requirements.txt
+    restart: always
+    ports:
+      - "8000:8000"
+    env_file: ./backend/.env
+    #command: 'sh -c "/wait-for db:5432 -- python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"'
+    #command: 'sh -c "/wait-for db:5432 -- python manage.py runserver 0.0.0.0:8000"'
+    command: 'sh -c "/wait-for db:5432 -- ./docker/entrypoint-manage.sh && python manage.py runserver 0.0.0.0:8000"'
+    volumes:
+      - ./backend:/app
+      - ./docker:/app/docker
+    depends_on:
+      - db
+
+volumes:
+  db-data:
