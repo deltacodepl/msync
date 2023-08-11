@@ -52,6 +52,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "accounts.apps.AccountsConfig",
+    "imap_items.apps.ImapItemsConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
