@@ -4,6 +4,7 @@ argon2-cffi-bindings==21.2.0
 asgiref==3.7.2
 attrs==23.1.0
 black==23.7.0
+celery==5.3.1
 certifi==2023.7.22
 cffi==1.15.1
 charset-normalizer==3.2.0
@@ -12,6 +13,7 @@ colorama==0.4.6
 coreapi==2.3.3
 coreschema==0.0.4
 Django==4.2.4
+django-celery-results==2.5.1
 django-cors-headers==4.2.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2

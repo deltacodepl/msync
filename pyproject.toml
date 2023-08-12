@@ -33,6 +33,8 @@ platformdirs = "^3.10.0"
 pathspec = "^0.11.2"
 pluggy = "^1.2.0"
 click = "^8.1.6"
+celery = "^5.3.1"
+django-celery-results = "^2.5.1"
 
 
 [build-system]
