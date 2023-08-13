@@ -57,6 +57,7 @@ services:
   worker:
     image: retryjoin/msync
     command: celery -A msync --app=config.celery:app worker --loglevel=info
+    # command: watchmedo auto-restart -d . -p '*.py' -- celery -A msync --app=config.celery:app worker --loglevel=info
     restart: unless-stopped
 #    networks:
 #      - backend-tier
