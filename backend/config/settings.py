@@ -48,6 +48,7 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "rest_framework",
     "drf_spectacular",
+    "django_celery_results",
 ]
 
 LOCAL_APPS = [
@@ -135,6 +136,16 @@ PASSWORD_HASHERS = [
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
 # Celery configurations
+
+# This configures Redis as the datastore between Django + Celery
+# CELERY_BROKER_URL = os.getenv('CELERY_BROKER_REDIS_URL', 'redis://redis:6379')
+# if you out to use os.environ the config is:
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_REDIS_URL', 'redis://redis:6379')
+
+
+# this allows you to schedule items in the Django admin.
+# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
+
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"

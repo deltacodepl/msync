@@ -1,3 +1,4 @@
+# coding: utf-8
 import pprint
 import smtplib
 import sys
@@ -15,7 +16,8 @@ ON_POSIX = 'posix' in sys.builtin_module_names
 
 def enqueue_output(out, queue):
     for line in iter(out.readline, b''):
-        queue.put(line)
+        logger.info(f"Line: {line}")
+        queue.put(line.decode('utf-8'))
     queue.task_done()
     out.close()
 
@@ -27,6 +29,7 @@ def get_imapsync_host_args(i, host):
     args = [
         '--host%d' % i, host['host'],
         '--user%d' % i, host['user'],
+        # '--password%d' % i, f"'{host['password']}'",
         '--password%d' % i, host['password'],
     ]
 
@@ -42,13 +45,10 @@ def get_imapsync_host_args(i, host):
 def imapsync(self, host1, host2, options={}):
     """
     Run imap synchronization.
-
-    This is a light wrapper around imapsync.
-    https://fedorahosted.org/imapsync/.
     """
-
     # Start imapsync
-    command = (['imapsync', '--nolog', '--noreleasecheck'] +
+
+    command = (['imapsync', '--nolog', '--noreleasecheck', '--automap'] +
                get_imapsync_host_args(1, host1) +
                get_imapsync_host_args(2, host2))
 
@@ -70,13 +70,14 @@ def imapsync(self, host1, host2, options={}):
     state = None
     while True:
         try:
-            line = q.get(timeout=5)
+            line: str = q.get(timeout=5)
         except Empty:
             if not t.is_alive():
                 break
         else:  # got line
-            line = line.rstrip()
-            logger.debug(line)
+            logger.info(f"Loop Line: {type(line)} - {line}")
+
+            line: str = line.rstrip()
 
             if line.startswith('++++ '):
                 if line.startswith('++++ Calculating sizes on Host'):
@@ -122,8 +123,8 @@ def imapsync(self, host1, host2, options={}):
         message['From'] = from_email
         message['To'] = to_email
 
-        s = smtplib.SMTP('localhost')
-        s.sendmail(from_email, [to_email], message.as_string())
-        s.quit()
+        # s = smtplib.SMTP('localhost')
+        # s.sendmail(from_email, [to_email], message.as_string())
+        # s.quit()
 
     return result
