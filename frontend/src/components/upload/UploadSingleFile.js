@@ -7,6 +7,7 @@ import { Box } from '@mui/material';
 import Image from '../Image';
 import RejectionFiles from './RejectionFiles';
 import BlockContent from './BlockContent';
+import { useCallback } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -31,8 +32,16 @@ UploadSingleFile.propTypes = {
   sx: PropTypes.object,
 };
 
+
 export default function UploadSingleFile({ error = false, file, helperText, sx, ...other }) {
+
+  const onDrop = useCallback(acceptedFiles => {
+    console.log(acceptedFiles[0]);
+
+  }, [])
+
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
+    onDrop,
     multiple: false,
     ...other,
   });
