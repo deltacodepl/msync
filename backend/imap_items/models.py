@@ -1,5 +1,5 @@
 import csv
-
+from io import StringIO
 from django.db import models
 from PIL import Image
 
@@ -16,11 +16,13 @@ class ImapItem(models.Model):
         try:
 
             self.result = str("decoded")
-            csv_data = csv.reader(self.csv_file.open(mode='rb'))
+            print(type(self.csv_file.open(mode='r').readlines()))
+            csv_data: list = csv.reader(StringIO(self.csv_file.open(mode='r').read().decode('utf-8')))
+            
             for item in csv_data:
                 print(item)
             print('Success')
         except Exception as e:
-            print('Classification failed:', e)
+            print('CSV failed:', e)
 
         return super().save(*args, **kwargs)
