@@ -14,12 +14,12 @@ logger = get_task_logger(__name__)
 ON_POSIX = 'posix' in sys.builtin_module_names
 
 
-def enqueue_output(out, queue):
-    for line in iter(out.readline, b''):
-        logger.info(f"Line: {line}")
+def enqueue_output(output_line, queue):
+    for line in iter(output_line.readline, b''):
+        logger.info(f"Line: {line.decode('utf-8')}")
         queue.put(line.decode('utf-8'))
     queue.task_done()
-    out.close()
+    output_line.close()
 
 
 def get_imapsync_host_args(i, host):
@@ -75,7 +75,7 @@ def imapsync(self, host1, host2, options={}):
             if not t.is_alive():
                 break
         else:  # got line
-            logger.info(f"Loop Line: {type(line)} - {line}")
+            logger.info(f"Imap Line: {type(line)} - {line}")
 
             line: str = line.rstrip()
 
