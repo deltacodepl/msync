@@ -47,13 +47,13 @@ def imapsync(self, host1, host2, options={}):
     Run imap synchronization.
     """
     # Start imapsync
-
+    logger.info('Starting Syncer from %s@%s to %s@%s with %r', host1['user'],
+                host1['host'], host2['user'], host2['host'], options)
+    
     command = (['imapsync', '--nolog', '--noreleasecheck', '--automap'] +
                get_imapsync_host_args(1, host1) +
                get_imapsync_host_args(2, host2))
 
-    logger.info('Starting sync from %s@%s to %s@%s with %r', host1['user'],
-                host1['host'], host2['user'], host2['host'], options)
     process = Popen(command, stdout=PIPE, bufsize=1, close_fds=ON_POSIX)
 
     # Open a queue to put the output of imapsync
@@ -66,7 +66,7 @@ def imapsync(self, host1, host2, options={}):
     t.start()
 
     # read output
-    result = {}
+    result: dict = {}
     state = None
     while True:
         try:
@@ -106,7 +106,7 @@ def imapsync(self, host1, host2, options={}):
 
     # Store the resultcode
     result['returncode'] = process.returncode
-    logger.info('Syncer completed with %s',
+    logger.info('Syncer completed with %s %s', result.get('Folders synced'),
                 'success' if process.returncode == 0 else 'failure')
 
     if options.get('feedback_to_email') and options.get('feedback_from_email'):

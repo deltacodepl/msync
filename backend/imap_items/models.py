@@ -38,9 +38,9 @@ class ImapItem(models.Model):
             )
 
             for row in csv_data:
-                print(row)
+                # print(row)
                 print(split_csv(row))
-                # imapsync.delay(*split_csv(row))
+                imapsync.delay(*split_csv(row))
 
             print("Success")
 

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-worker
+  namespace: msync-api
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      name: celery-worker
+  template:
+    metadata:
+      labels:
+        name: celery-worker
+    spec:
+      containers:
+        - name: celery-worker
+          image: msync-api
+          command:
+            - "bash"
+            - "-c"
+            - "celery -A msync --app=config.celery:app worker --concurrency=1 --prefetch-multiplier=1 --loglevel=info"
+          # envFrom:
+          #   - secretRef:
+          #       name: celery-workers-secret
+          env:
+            - name: CELERY_BROKER_URL
+              value: redis://192.168.1.12:6379
