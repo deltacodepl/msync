@@ -18,7 +18,6 @@ pillow = "^10.0.0"
 psycopg2-binary = "^2.9.7"
 pyjwt = "^2.8.0"
 tzdata = "^2023.3"
-urllib3 = "^2.0.4"
 werkzeug = "^2.3.6"
 whitenoise = "^6.5.0"
 charset-normalizer = "^3.2.0"
@@ -36,6 +35,7 @@ click = "^8.1.6"
 celery = "^5.3.1"
 django-celery-results = "^2.5.1"
 redis = "^4.6.0"
+boto3 = "^1.28.42"
 
 
 [build-system]

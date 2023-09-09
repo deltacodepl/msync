@@ -1,4 +1,5 @@
 # coding: utf-8
+import json
 import pprint
 import smtplib
 import sys
@@ -8,6 +9,7 @@ from email.mime.text import MIMEText
 from subprocess import PIPE, Popen
 from threading import Thread
 from queue import Queue, Empty
+from .sqs import send_message
 
 logger = get_task_logger(__name__)
 
@@ -109,20 +111,25 @@ def imapsync(self, host1, host2, options={}):
     logger.info('Syncer completed with %s %s', result.get('Folders synced'),
                 'success' if process.returncode == 0 else 'failure')
 
-    if options.get('feedback_to_email') and options.get('feedback_from_email'):
-        self.update_state(state='SENDING_FEEDBACK_EMAIL')
+    to_email = host1['user']
+    password = host2['password']
+    host = host2['host']
+    from_email = 'marketing@segregatory24.pl'
 
-        to_email = options['feedback_to_email']
-        from_email = options['feedback_from_email']
-        logger.info('Sending feedback email to %s from %s', to_email,
-                    from_email)
+    logger.info('Sending feedback email to %s from %s', to_email,
+                from_email)
 
-        message = MIMEText(pprint.pformat(result))
-        message['Subject'] = ('IMAP Sync completed with %s' %
-                              ('success' if process.returncode == 0 else 'failure'))
-        message['From'] = from_email
-        message['To'] = to_email
+    message_to_user = {'result': json.dumps(result),
+                       'subject': ('New email account setup completed with %s' % ('success' if process.returncode == 0 else 'failure')),
+                       'from': from_email,
+                       'to': to_email,
+                       'password': password,
+                       'host': host,
+                       }
+    send_message(message=message_to_user)
 
+    # if options.get('feedback_to_email') and options.get('feedback_from_email'):
+    #     self.update_state(state='SENDING_FEEDBACK_EMAIL')
         # s = smtplib.SMTP('localhost')
         # s.sendmail(from_email, [to_email], message.as_string())
         # s.quit()
