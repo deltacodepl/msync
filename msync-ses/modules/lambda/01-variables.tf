@@ -11,6 +11,11 @@ variable "environment_name" {
   default     = "dev"
 }
 
+variable "code_dir" {
+  type = string
+  default = ""
+}
+
 ######################################## Dead Letter Queue Arn #####################################
 variable "dead_letter_queue_arn" {
   description = "The arn of the Dead Letter Queue"
@@ -51,7 +56,7 @@ variable "runtime" {
 variable "timeout" {
   description = "The timeout period of the lambda function in seconds"
   type        = number
-  default     = 3
+  default     = 5
 }
 
 variable "reserved_concurrent_executions" {
@@ -75,6 +80,6 @@ locals {
   lambda_execution_role_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.iam_role_name}"
 }
 
-locals {
-  dynamodb_table_name = "${var.dynamodb_table_base_name}-${var.environment_name}-${data.aws_region.current.name}"
-}
+# locals {
+#   dynamodb_table_name = "${var.dynamodb_table_base_name}-${var.environment_name}-${data.aws_region.current.name}"
+# }

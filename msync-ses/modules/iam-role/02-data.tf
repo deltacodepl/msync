@@ -23,7 +23,8 @@ data "aws_iam_policy_document" "iam-policy-document" {
     sid = "AllowSQSSendMessage"
 
     actions = [
-      "sqs:SendMessage"
+      #"sqs:SendMessage"
+      "sqs:*"
     ]
 
     resources = [
@@ -31,5 +32,32 @@ data "aws_iam_policy_document" "iam-policy-document" {
     ]
   }
 
+  statement {
+    sid = "AllowKMSDecryption"
+
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:GenerateDataKey",
+      "kms:GenerateDataKeyPair"
+    ]
+
+    resources = [
+      "${var.kms_key_arn}"
+    ]
+  }
+  statement {
+    sid = "AllowSES"
+
+    actions = [
+      "ses:SendRawEmail",
+      "ses:SendEmail",
+      "ses:SendTemplatedEmail"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
 
 }

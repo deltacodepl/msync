@@ -39,6 +39,11 @@ variable "sqs_queue_base_name" {
   default     = "sqs-queue"
 }
 
+variable "kms_key_arn" {
+  type = string
+  default = ""
+}
+
 ######################################## Local Variables ###########################################
 locals {
   tags = tomap({

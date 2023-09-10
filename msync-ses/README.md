@@ -29,5 +29,6 @@ terraform apply -auto-approve
 # To tear down the stack 
 terraform destroy -auto-approve
 ```
+### TODO
 
-
+- [ ] Add DLQ

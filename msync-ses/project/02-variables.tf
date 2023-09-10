@@ -27,18 +27,18 @@ variable "delay_seconds" {
 variable "max_message_size" {
   description = "SQS queue maximum message size"
   type        = number
-  default     = 0
+  default     = 2048
 }
 
 variable "message_retention_seconds" {
   description = "SQS queue message retention period in seconds"
   type        = number
-  default     = 0
+  default     = 1500
 }
 variable "receive_wait_time_seconds" {
   description = "SQS queue receive wait time in seconds"
   type        = number
-  default     = 0
+  default     = 1
 }
 
 ######################################## IAM Role / Policy #########################################
@@ -89,7 +89,34 @@ variable "timeout" {
 variable "reserved_concurrent_executions" {
   description = "The reserved concurrency for the lambda function."
   type        = number
-  default     = 1
+  default     = 2
+}
+
+variable "kms_key_alias" {
+  type = string
+  default = "kms-msync-ses"
+  
+}
+
+variable "rotation_enabled" {
+  type = bool
+  default = false
+
+}
+
+
+variable "user_arn" {
+  type = string
+  default = "arn:aws:iam::615263381294:user/koadmin"
+  
+}
+
+variable key_spec {
+  default = "SYMMETRIC_DEFAULT"
+}
+
+variable enabled {
+  default = true
 }
 ######################################## CloudWatch Alarm ##########################################
 # variable "cloudwatch_alarm_type" {

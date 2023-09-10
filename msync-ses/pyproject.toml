@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "msync-ses"
+version = "0.1.0"
+description = ""
+authors = ["Krzysztof Olszewski <hello@retryjoin.pl>"]
+readme = "README.md"
+packages = [{include = "msync_ses"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+boto3 = "^1.28.42"
+jinja2 = "^3.1.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

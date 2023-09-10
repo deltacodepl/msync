@@ -13,10 +13,10 @@ variable "environment_name" {
 }
 
 ######################################## KMS Key ###################################################
-variable "kms_key_alias" {
+variable "kms_key_id" {
   description = "KMS Key Id"
   type        = string
-  default     = "SB-KMS"
+  default     = ""
 }
 
 ######################################## SQS Queue #################################################

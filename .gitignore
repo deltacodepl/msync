@@ -5,6 +5,9 @@
 *.csv
 uploads/
 backend/projects/
+poetry.lock
+image/outlook.png
+image/testowe.png
 
 ### Django ###
 *.log
