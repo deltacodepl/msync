@@ -5,7 +5,7 @@
 *.csv
 uploads/
 backend/projects/
-poetry.lock
+./poetry.lock
 image/outlook.png
 image/testowe.png
 

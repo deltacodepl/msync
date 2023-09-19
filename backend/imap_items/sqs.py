@@ -29,4 +29,4 @@ def send_message(message: dict):
 
 
 # if __name__ == "__main__":
-#     send_message(message={"from_email": "admin@segregatory24.pl"})
+#     send_message(message={"from_email": "admin@poczta.pl"})

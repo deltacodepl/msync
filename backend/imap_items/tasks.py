@@ -1,6 +1,6 @@
 # coding: utf-8
 import json
-import pprint
+import os
 import smtplib
 import sys
 from celery import shared_task
@@ -9,9 +9,15 @@ from email.mime.text import MIMEText
 from subprocess import PIPE, Popen
 from threading import Thread
 from queue import Queue, Empty
-from .sqs import send_message
+# from .sqs import send_message
+from .send_email import send_email, render_template
 
 logger = get_task_logger(__name__)
+# logger.basicConfig(
+#     stream=sys.stdout,
+#     format="%(asctime)s %(levelname)s %(module)s "
+#     "%(process)s[%(thread)s] %(message)s",
+# )
 
 ON_POSIX = 'posix' in sys.builtin_module_names
 
@@ -52,7 +58,7 @@ def imapsync(self, host1, host2, options={}):
     logger.info('Starting Syncer from %s@%s to %s@%s with %r', host1['user'],
                 host1['host'], host2['user'], host2['host'], options)
     
-    command = (['imapsync', '--nolog', '--noreleasecheck', '--automap'] +
+    command = (['imapsync', '--nolog', '--noreleasecheck', '--automap', '--addheader'] +
                get_imapsync_host_args(1, host1) +
                get_imapsync_host_args(2, host2))
 
@@ -111,22 +117,33 @@ def imapsync(self, host1, host2, options={}):
     logger.info('Syncer completed with %s %s', result.get('Folders synced'),
                 'success' if process.returncode == 0 else 'failure')
 
-    to_email = host1['user']
+    to_email = host2['user']
     password = host2['password']
     host = host2['host']
-    from_email = 'marketing@segregatory24.pl'
+    from_email = 'marketing@'
 
     logger.info('Sending feedback email to %s from %s', to_email,
                 from_email)
 
     message_to_user = {'result': json.dumps(result),
-                       'subject': ('New email account setup completed with %s' % ('success' if process.returncode == 0 else 'failure')),
+                       # 'subject': ('Nowe konto pocztowe zostało utworzone %s '
+                       # % ('success' if process.returncode == 0 else 'failure')),
+                       'subject': 'Nowe konto pocztowe - korekta nazwy serwera ',
                        'from': from_email,
-                       'to': to_email,
+                       'username': to_email,
                        'password': password,
                        'host': host,
                        }
-    send_message(message=message_to_user)
+    # Non SES
+    html = render_template("email2.j2", message_to_user)
+    to_list = [message_to_user.get("username")]
+    sender = "KO<>"
+    cc = "admin@"
+    subject = message_to_user.get("subject") + message_to_user.get('username')
+    # send_email(to_list, sender, cc, None, subject, html)
+
+    # SQS
+    # send_message(message=message_to_user)
 
     # if options.get('feedback_to_email') and options.get('feedback_from_email'):
     #     self.update_state(state='SENDING_FEEDBACK_EMAIL')

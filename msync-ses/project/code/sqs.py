@@ -119,7 +119,7 @@ def send_email(payload: dict):
             'ToAddresses': [
               payload.get('to')
             ],
-            'CcAddresses': ['admin@segregatory24.pl'],
+            'CcAddresses': ['admin@'],
           },
           ReplyToAddresses=[
             payload.get('from'),

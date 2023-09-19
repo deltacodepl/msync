@@ -2,6 +2,16 @@ import csv
 from io import StringIO
 from django.db import models
 from .tasks import imapsync
+import logging
+import sys
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+logging.basicConfig(
+    stream=sys.stdout,
+    format="%(asctime)s %(levelname)s %(module)s "
+    "%(process)s[%(thread)s] %(message)s",
+)
 
 
 def split_csv(row: dict):
@@ -39,7 +49,7 @@ class ImapItem(models.Model):
 
             for row in csv_data:
                 # print(row)
-                print(split_csv(row))
+                logger.info(split_csv(row))
                 imapsync.delay(*split_csv(row))
 
             print("Success")
